@@ -1,0 +1,62 @@
+class Solution {
+    public int minMutation(String startGene, String endGene, String[] bank) {
+
+        HashSet<String> st = new HashSet<>();
+
+        for (String s : bank) {
+            st.add(s);
+        }
+
+        if (!st.contains(endGene)) {
+            return -1;
+        }
+
+        char[] genes = {'A', 'C', 'G', 'T'};
+
+        Queue<String> q = new LinkedList<>();
+        q.offer(startGene);
+
+        int ans = 0;
+
+        while (!q.isEmpty()) {
+
+            int size = q.size();
+
+            while (size-- > 0) {
+
+                String cur = q.poll();
+
+                if (cur.equals(endGene)) {
+                    return ans;
+                }
+
+                char[] arr = cur.toCharArray();
+
+                for (int i = 0; i < 8; i++) {
+
+                    char old = arr[i];
+
+                    for (char ch : genes) {
+
+                        if (ch == old) continue;
+
+                        arr[i] = ch;
+
+                        String next = new String(arr);
+
+                        if (st.contains(next)) {
+                            q.offer(next);
+                            st.remove(next);
+                        }
+                    }
+
+                    arr[i] = old;
+                }
+            }
+
+            ans++;
+        }
+
+        return -1;
+    }
+}
