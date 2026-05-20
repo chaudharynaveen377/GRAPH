@@ -60,3 +60,62 @@ class Solution {
         return -1;
     }
 }
+
+
+
+//  Approach 2
+
+class Solution {
+    public int minMutation(String startGene, String endGene, String[] bank) {
+
+        HashSet<String> st = new HashSet<>();
+
+        for (int i = 0; i < bank.length; i++) {
+            st.add(bank[i]);
+        }
+
+        int ans = 0;
+
+        Queue<String> que = new LinkedList<>();
+        que.offer(startGene);
+
+        while (!que.isEmpty()) {
+
+            int size = que.size();
+
+            while (size-- > 0) {
+
+                String temp = que.poll();
+
+                if (temp.equals(endGene)) return ans;
+
+                char[] chr = temp.toCharArray();
+
+                for (int i = 0; i < 8; i++) {
+
+                    
+
+                    for (int j = 0; j < 26; j++) {
+
+                        char temp1 = chr[i];
+
+                        chr[i] = (char) ('A' + j);
+
+                        String str = new String(chr);
+
+                        if (st.contains(str)) {
+                            que.offer(str);
+                            st.remove(str);
+                        }
+
+                        chr[i] = temp1;
+                    }
+                }
+            }
+
+            ans++;
+        }
+
+        return -1;
+    }
+}
