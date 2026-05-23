@@ -1,0 +1,46 @@
+class Solution {
+    static int[]dx={0,0,-1,1};
+    static int[]dy={1,-1,0,0};
+    public int nearestExit(char[][] maze, int[] entrance) {
+        Queue<int[]> que=new LinkedList<>();
+int x1=entrance[0];
+int y1=entrance[1];
+        que.offer(new int[]{x1,y1});
+        maze[x1][y1]='+';
+        int ans=0;
+
+        while(!que.isEmpty()){
+            int size=que.size();
+
+            while(size-->0){
+
+                int temp[]=que.poll();
+                int x=temp[0];
+                int y=temp[1];
+
+                if((x==0 || y==0 || x==maze.length-1 || y==maze[0].length-1) && ans!=0 ){
+                    return ans;
+                }
+              
+              for(int i=0;i<4;i++){
+                int nx=x+dx[i];
+                int ny=y+dy[i];
+
+                if(nx<0 || ny<0 || nx>=maze.length || ny>=maze[0].length || maze[nx][ny]=='+'){
+                    continue;
+                }
+
+                que.offer(new int[]{nx,ny});
+                maze[nx][ny]='+';
+              }
+
+            }
+            ans++;
+        
+        }
+
+        return -1;
+
+
+    }
+}
