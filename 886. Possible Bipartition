@@ -1,0 +1,103 @@
+//   dfs
+
+class Solution {
+
+    static boolean dfs(int src,boolean visited[],List<List<Integer>> adj,int clr,int [] color ){
+        visited[src]=true;
+       color[src]=clr;
+       for(int val : adj.get(src)){
+        if(!visited[val]){
+          if(! dfs( val,visited,adj,clr==0 ? 1 : 0,color)){
+            return false;
+          }
+        }else{
+            if(color[val]==color[src]){
+                return false;
+            }
+        }
+
+       }
+       return true;
+       
+
+
+    }
+    
+    public boolean possibleBipartition(int n, int[][] dislikes) {
+
+        List<List<Integer>> adj=new ArrayList<>();
+
+        for(int i=0;i<=n;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int i=0;i<dislikes.length;i++){
+            int v=dislikes[i][0];
+            int u=dislikes[i][1];
+            adj.get(v).add(u);
+            adj.get(u).add(v);
+        }
+        boolean visited[]=new boolean[n+1];
+        int color[]=new int[n+1];
+for(int i=1;i<=n;i++){
+    if(!visited[i] && !dfs(i,visited,adj,0,color)){
+        return false;
+    }
+}
+        return true;
+
+        
+    }
+}
+
+
+// BFS
+
+class Solution {
+    static boolean bfs(int n,int st, int[][] dislikes,int color[]){
+ ArrayList<ArrayList<Integer>> adj=new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int i=0;i<dislikes.length;i++){
+            int a=dislikes[i][0];
+            int b=dislikes[i][1];
+
+            adj.get(a).add(b);
+adj.get(b).add(a);
+        }
+      
+        Queue<Integer> que=new LinkedList<>();
+        que.offer(st);
+        color[st]=0;
+        while(!que.isEmpty()){
+            int u=que.poll();
+
+            for(int val:adj.get(u)){
+                if(color[val]==-1){
+                color[val]=color[u]==0 ? 1 : 0;
+                que.offer(val);
+                }
+                else{
+                    if(color[val]==color[u]){
+                        return false;
+                    }
+            }
+        }
+        }
+           return true;
+    }
+    public boolean possibleBipartition(int n, int[][] dislikes) {
+          int color[]=new int[n+1];
+        Arrays.fill(color,-1);
+
+        for(int i=1;i<color.length;i++){
+            if(color[i]==-1){
+               if(!bfs(n,i,dislikes,color)){
+                return false;
+               }
+
+            }
+        }
+        return true;
+    }
+}
