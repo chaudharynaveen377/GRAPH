@@ -1,0 +1,91 @@
+Tree Re-rooting Technique (DP on Trees)
+
+Tree rerooting is an advanced dynamic programming technique used on trees to compute answers for every node as root efficiently.
+
+Instead of recalculating the whole DFS for every root (O(N²)), rerooting computes all answers in O(N).
+
+1. What is Re-rooting?
+
+Normally in trees, we assume one node is the root (say node 0).
+
+Re-rooting means:
+
+“If the root changes from one node to another, how does the answer change?”
+
+It helps solve problems like:
+
+Sum of distances from every node
+Maximum subtree values
+Number of paths
+Tree DP for every root
+Longest distance from each node
+Contribution techniques
+2. Basic Idea
+
+We usually do:
+
+First DFS
+
+Compute information for subtree.
+
+Second DFS
+
+Move root from parent → child and update answers.
+
+3. Classic Example: Sum of Distances from Every Node
+
+Given a tree of n nodes.
+
+For every node u, compute:
+
+ans[u]=∑distance(u,v)
+4. Naive Solution
+
+Run BFS/DFS from every node.
+
+Complexity:
+
+O(N
+2
+)
+
+Too slow for large trees.
+
+5. Optimized Re-rooting Solution
+
+We use:
+
+sub[u] → size of subtree
+dp[u] → sum of distances inside subtree
+ans[u] → final answer for node u
+6. First DFS
+
+We compute:
+
+subtree size
+sum of distances in subtree
+
+Formula:
+
+dp[u]+=dp[v]+sub[v]
+
+because every node in child subtree becomes 1 farther from u.
+
+Code
+static ArrayList<Integer>[] g;
+static int[] sub;
+static int[] dp;
+
+static void dfs1(int u, int p) {
+    sub[u] = 1;
+
+    for (int v : g[u]) {
+        if (v == p) continue;
+
+        dfs1(v, u);
+
+        sub[u] += sub[v];
+
+        dp[u] += dp[v] + sub[v];
+    }
+}
