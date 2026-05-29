@@ -1,0 +1,43 @@
+class Solution {
+    static int[] ans;
+    static int[] dfs(int src,  List<List<Integer>> adj,String labels,boolean visited[]){
+        visited[src]=true;
+int[] freq = new int[26];
+
+    char ch = labels.charAt(src);
+    freq[ch - 'a']++;
+        for(int val:adj.get(src)){
+            if(!visited[val]){
+              
+             int child[]= dfs(val,adj,labels,visited);
+             for (int i = 0; i < 26; i++) {
+                freq[i] += child[i];
+            }
+            }
+        }
+                
+            ans[src]=freq[labels.charAt(src)-'a'];
+            
+        return freq;
+    }
+    public int[] countSubTrees(int n, int[][] edges, String labels) {
+        List<List<Integer>> adj=new ArrayList<>();
+        ans=new int[labels.length()];
+        for(int i=0;i<n;i++){
+            adj.add(new ArrayList<>());
+        }
+
+        for(int i=0;i<edges.length;i++){
+            int v=edges[i][0];
+            int u=edges[i][1];
+
+            adj.get(v).add(u);
+            adj.get(u).add(v);
+            
+            }
+boolean visited[]=new boolean[n];
+             dfs(0,adj,labels,visited);
+             return ans;
+        
+    }
+}
