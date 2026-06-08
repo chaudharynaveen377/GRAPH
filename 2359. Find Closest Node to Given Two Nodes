@@ -1,0 +1,86 @@
+class Solution {
+    static void solve(int src,List<List<Integer>> adj,int[]dist,boolean visited[]){
+        Arrays.fill(dist,-1);
+      Queue<Integer> que=new LinkedList<>();
+    que.offer(src);
+    dist[src]=0;
+    visited[src]=true;
+
+    while(!que.isEmpty()){
+        int size=que.size();
+
+        while(size-->0){
+            int temp=que.poll();
+
+            for(int val:adj.get(temp)){
+                if(!visited[val]){
+                    dist[val]=dist[temp]+1;
+                    visited[val]=true;
+                    que.offer(val);
+                }
+            }
+        }
+    }
+  
+    }
+
+static int bfs(int src,List<List<Integer>> adj,int[]dist){
+    boolean visited[]=new boolean[dist.length];
+    int dist2[]=new int[dist.length];
+     int ans=Integer.MAX_VALUE;
+     int result=-1;
+      Queue<Integer> que=new LinkedList<>();
+    que.offer(src);
+    dist2[src]=0;
+    visited[src]=true;
+    if(dist[src]!=-1){
+        ans=Math.min(ans,Math.max(dist[src],dist2[src]));
+        result=src;
+    }
+
+    while(!que.isEmpty()){
+        int size=que.size();
+
+        while(size-->0){
+            int temp=que.poll();
+
+            for(int val:adj.get(temp)){
+                if(!visited[val]){
+                    dist2[val]=dist2[temp]+1;
+                    if(dist[val]!=-1){
+      int curr = Math.max(dist[val], dist2[val]);
+
+if (curr < ans || (curr == ans && val < result)) {
+    ans = curr;
+    result = val;
+};
+    }
+                    visited[val]=true;
+                    que.offer(val);
+                }
+            }
+        }
+    }
+  return result;
+    }
+
+    public int closestMeetingNode(int[] edges, int node1, int node2) {
+        List<List<Integer>> adj=new ArrayList<>();
+
+        for(int i=0;i<edges.length;i++){
+           adj.add(new ArrayList<>());
+        }
+
+        for(int i=0;i<edges.length;i++){
+            if(edges[i]!=-1){
+             adj.get(i).add(edges[i]);
+            }
+        }
+        boolean visited[]=new boolean[edges.length];
+int []dist=new int[edges.length];
+
+solve(node1,adj,dist,visited);
+
+return bfs(node2,adj,dist);
+       }
+}
