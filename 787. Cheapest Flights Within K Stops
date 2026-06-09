@@ -11,7 +11,7 @@ class Solution {
             this.node = node;
             this.cost = cost;
             this.stops = stops;
-        }
+        } 
     }
 
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
