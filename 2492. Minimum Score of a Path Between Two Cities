@@ -1,0 +1,40 @@
+class Solution {
+    private int ans;
+
+    public int minScore(int n, int[][] roads) {
+        ans = Integer.MAX_VALUE;
+
+        List<int[]>[] graph = new ArrayList[n + 1];
+        for(int i = 0; i <= n; i++){
+            graph[i] = new ArrayList<>();
+        }
+
+        for(int[] r : roads){
+            int u = r[0];
+            int v = r[1];
+            int d = r[2];
+
+            graph[u].add(new int[]{v,d});
+            graph[v].add(new int[]{u,d});
+        }
+
+        boolean[] visited = new boolean[n + 1];
+        dfs(1,graph,visited);
+
+        return ans;
+    }
+
+    private void dfs(int node,List<int[]>[] graph,boolean[] visited){
+        visited[node] = true;
+
+        for(int[] nei : graph[node]){
+            int next = nei[0];
+            int dist = nei[1];
+
+            ans = Math.min(ans,dist);
+
+            if(!visited[next])
+                dfs(next,graph,visited);
+        }
+    }
+}
